@@ -1,6 +1,8 @@
-import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
+import SignIn from "~/components/SignIn";
+import SignOut from "~/components/SignOut";
+import { getServerAuthSession } from "~/server/auth";
 
 export default function Home() {
   return (
@@ -48,20 +50,15 @@ export default function Home() {
   );
 }
 
-function AuthShowcase() {
-  const { data: sessionData } = useSession();
+async function AuthShowcase() {
+  const session = await getServerAuthSession();
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <p className="text-center text-2xl text-white">
-        {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
+        {session && <span>Logged in as {session.user?.name}</span>}
       </p>
-      <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-        onClick={sessionData ? () => void signOut() : () => void signIn()}
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
+      {session ? <SignOut /> : <SignIn />}
     </div>
   );
 }
