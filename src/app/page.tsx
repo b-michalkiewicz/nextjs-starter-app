@@ -1,7 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import SignIn from "~/components/SignIn";
-import SignOut from "~/components/SignOut";
+import { SignIn, SignOut, User } from "~/components/auth.components";
 import { getServerAuthSession } from "~/server/auth";
 
 export default function Home() {
@@ -59,6 +58,7 @@ async function AuthShowcase() {
         {session && <span>Logged in as {session.user?.name}</span>}
       </p>
       {session ? <SignOut /> : <SignIn />}
+      <User />
     </div>
   );
 }
